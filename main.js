@@ -1,4 +1,6 @@
 const schemeList = [];
+let colours = document.querySelector('.colours');
+
 
 const APP = {
     canvas: null,
@@ -61,7 +63,6 @@ const APP = {
 
     addBox(ev) {
       //user clicked. Let's add boxes below with the pixel and the average
-        let colours = document.querySelector('.colours');
         let pixel = document.createElement('span');
         getColorScheme(APP.pixel)
         setTimeout(() => {
@@ -73,7 +74,7 @@ const APP = {
           let scheme1 = document.createElement('span');
           scheme1.className = 'box';
           scheme1.setAttribute('data-label', 'Scheme1');
-          scheme1.setAttribute('data-color', APP.scheme1);
+          scheme1.setAttribute('data-color', schemeList[0]);
           scheme1.setAttribute('id', 'scheme1');
 
           let scheme2 = document.createElement('span');
@@ -117,9 +118,6 @@ const APP = {
     },
   };
     
-    
-
-
 
 // When user clicks it, fetch data from API and send it to color extraction tool
 
@@ -159,6 +157,48 @@ function getImage(e) {
 
     APP.img.src = imgURLList[0];
 }
+
+// Zoom In Selected Scheme Color (IN PROGRESSs)
+// const span = document.querySelector('span');
+// colours.addEventListener('click', addZoomInBox);
+
+// function addZoomInBox(e) {
+  // const zoomIn = document.createElement('span');
+  // colours.appendChild(span);
+  // zoomIn.setAttribute('id', 'zoomIn');
+
+  // zoomIn.style.clientWidth + 500 + 'px';
+  // zoomIn.style.clientHeight + 500 + 'px';
+
+  // let dataColor = e.target.getAttribute('data-color'); 
+  // zoomIn.style.backgroundColor = dataColor;
+  // console.log(dataColor);  
+
+  // let currWidth = e.target.clientWidth;
+  // let
+  // if(currWidth == 500) {
+  //   alert("Maximum zoom-in level reached.");
+  // } else {
+  //   e.target.style.width = (currWidth + 300) + 'px';
+  // }
+  // console.log('moving')
+
+  // e.target.style.width = 500 + 'px'
+  // e.target.style.width = 500 + 'px'
+
+
+
+  // zoomIn.style.width = 500 + 'px';
+  // zoomIn.style.height = 500 + 'px';
+
+// } 
+
+
+// let currWidth = zoomIn.clientWidth;
+
+
+
+
 
 
 document.addEventListener('DOMContentLoaded', APP.init);
