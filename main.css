@@ -66,3 +66,16 @@ main p canvas {
     bottom: 5px;
     left: 5px;
 }
+
+.colours {
+    display: flex;
+    height: 100vh;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: top;
+    justify-content: space-between;
+}
+
+.colours [span= "data-label"] [
+    
+]

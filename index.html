@@ -11,10 +11,11 @@
     <body>
         <main>
         <h1>Colour Extraction Tool</h1>
-        <p>
+        <p class="container">
             <span class="box" id="pixelColor" data-label="Current Pixel"></span>
             <!-- images are from pexels.com -->
-            <canvas data-src="./sample2.jpg" width="900"></canvas>
+            <input type="file" id="image_input" accept="image/png, image/jpg" />
+            <canvas id="display_image" data-src= width="900"></canvas>
         </p>
         <section class="colours">
             <!-- saved colours here -->

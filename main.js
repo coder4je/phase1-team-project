@@ -1,5 +1,4 @@
-let rgbData;
-
+const schemeList = [];
 
 const APP = {
     canvas: null,
@@ -14,7 +13,9 @@ const APP = {
         APP.canvas.height = 600;
         APP.canvas.style.height = 600;
         APP.img = document.createElement('img');
-        APP.img.src = APP.canvas.getAttribute('data-src');
+        // APP.img.src = APP.canvas.getAttribute('data-src');
+        // testing
+        APP.img.src = imageFile;
       //once the image is loaded, add it to the canvas
         APP.img.onload = (ev) => {
         APP.ctx.drawImage(APP.img, 0, 0);
@@ -29,6 +30,7 @@ const APP = {
         // console.log(APP.data.length, 900 * 600 * 4); //  has 2,160,000 elements
         APP.canvas.addEventListener('mousemove', APP.getPixel);
         APP.canvas.addEventListener('click', APP.addBox);
+        
         };
     },
     getPixel(ev) {
@@ -44,55 +46,9 @@ const APP = {
         document.getElementById('pixelColor').style.backgroundColor = clr;
       //save the string to use elsewhere
         APP.pixel = clr;
-      //now get the average of the surrounding pixel colours
-        APP.getAverage(ev);
+        
     },
-    getAverage(ev) {
-      //create a 41px by 41px average colour square
-      //replace everything in the canvas with the original image
-      // let canvas = ev.target;
-        let cols = APP.canvas.width;
-        let rows = APP.canvas.height;
-      //remove the current contents of the canvas to draw the image and box again
-        APP.ctx.clearRect(0, 0, cols, rows);
-      //add the image from memory
-        APP.ctx.drawImage(APP.img, 0, 0);
-        let { offsetX, offsetY } = ev;
-        const inset = 20;
-      //inset by 20px as our workable range
-        offsetX = Math.min(offsetX, cols - inset);
-        offsetX = Math.max(inset, offsetX);
-        offsetY = Math.min(offsetY, rows - inset);
-        offsetY = Math.max(offsetY, inset);
-      //create a 41 x 41 pixel square for the average
-        let reds = 0; //total for all the red values in the 41x41 square
-        let greens = 0;
-        let blues = 0;
-      //for anything in the range (x-20, y-20) to (x+20, y+20)
-      for (let x = -1 * inset; x <= inset; x++) {
-        for (let y = -1 * inset; y <= inset; y++) {
-            let c = APP.getPixelColor(cols, offsetY + y, offsetX + x);
-            reds += c.red;
-            greens += c.green;
-            blues += c.blue;
-            }
-        }
-        let nums = 41 * 41; //total number of pixels in the box
-        let red = Math.round(reds / nums);
-        let green = Math.round(greens / nums);
-        let blue = Math.round(blues / nums);
-        //create a colour string for the average colour
-        let clr = `rgb(${red}, ${green}, ${blue})`;
-        //now draw an overlaying square of that colour
-        //make the square twice as big as the sample area
-        APP.ctx.fillStyle = clr;
-        APP.ctx.strokeStyle = '#FFFFFF';
-        APP.ctx.strokeWidth = 2;
-        //save the average colour for later
-        APP.average = clr;
-        APP.ctx.strokeRect(offsetX - inset, offsetY - inset, 41, 41);
-        APP.ctx.fillRect(offsetX - inset, offsetY - inset, 41, 41);
-    },
+
     getPixelColor(cols, x, y) {
       //see grid.html as reference for this algorithm
       let pixel = cols * x + y;
@@ -104,45 +60,91 @@ const APP = {
         alpha: APP.data[arrayPos + 3],
         };
     },
+
     addBox(ev) {
       //user clicked. Let's add boxes below with the pixel and the average
         let colours = document.querySelector('.colours');
         let pixel = document.createElement('span');
-        pixel.className = 'box';
-        pixel.setAttribute('data-label', 'Exact pixel');
-        pixel.setAttribute('data-color', APP.pixel);
-    
-        let average = document.createElement('span');
-        average.className = 'box';
-        average.setAttribute('data-label', 'Average');
-        average.setAttribute('data-color', APP.average);
-    
-        pixel.style.backgroundColor = APP.pixel;
-        average.style.backgroundColor = APP.average;
-        colours.append(pixel, average);
-        
-        rgbData = APP.average;
-        console.log(rgbData)
-        getColorScheme(rgbData)
+        getColorScheme(APP.pixel)
+        setTimeout(() => {
+          pixel.className = 'box';
+          pixel.setAttribute('data-label', 'Exact pixel');
+          pixel.setAttribute('data-color', APP.pixel);
+          scheme1.setAttribute('id', 'scheme1');
+          
+          let scheme1 = document.createElement('span');
+          scheme1.className = 'box';
+          scheme1.setAttribute('data-label', 'Scheme1');
+          scheme1.setAttribute('data-color', APP.scheme1);
+          scheme1.setAttribute('id', 'scheme1');
 
+      
+          let scheme2 = document.createElement('span');
+          scheme2.className = 'box';
+          scheme2.setAttribute('data-label', 'Scheme2');
+          scheme2.setAttribute('data-color', schemeList[1]);
+          
+          let scheme3 = document.createElement('span');
+          scheme3.className = 'box';
+          scheme3.setAttribute('data-label', 'Scheme3');
+          scheme3.setAttribute('data-color', schemeList[2]);
+  
+          let scheme4 = document.createElement('span');
+          scheme4.className = 'box';
+          scheme4.setAttribute('data-label', 'Scheme4');
+          scheme4.setAttribute('data-color', schemeList[3]);
+  
+          let scheme5 = document.createElement('span');
+          scheme5.className = 'box';
+          scheme5.setAttribute('data-label', 'Scheme5');
+          scheme5.setAttribute('data-color', schemeList[4]);
+  
+          pixel.style.backgroundColor = APP.pixel;
+          scheme1.style.backgroundColor = schemeList[0];
+          scheme2.style.backgroundColor = schemeList[1];
+          scheme3.style.backgroundColor = schemeList[2];
+          scheme4.style.backgroundColor = schemeList[3];
+          scheme5.style.backgroundColor = schemeList[4];
+
+
+  
+          colours.append(pixel);
+          colours.append(pixel, scheme1);
+          colours.append(pixel, scheme2);
+          colours.append(pixel, scheme3);
+          colours.append(pixel, scheme4);
+          colours.append(pixel, scheme5);
+        }, 500)
 
         },
     };
     
-    document.addEventListener('DOMContentLoaded', APP.init);
     
 
+
+
 // Connect to API
+
+
 
 function getColorScheme(elm) {
     fetch(`https://www.thecolorapi.com/scheme?rgb=${elm}`)
     .then(res => res.json())
     .then(data => {
         data.colors.forEach(item => {
-            console.log(item.rgb.value)
+            schemeList.unshift(item.rgb.value)
+            console.log(item.rgb.value);
+            console.log(schemeList);
         })
-        // let rgbValue = data.colors[0].rgb.value;
-        // console.log(rgbValue)
     })
-    .catch(error => alert('Color is not selected yet'));
-}
+    .catch(error => alert('Color Is Not Selected Yet'))
+};
+
+
+
+
+// testing
+const imageFile = "./sample2.jpg"
+
+
+document.addEventListener('DOMContentLoaded', APP.init);
