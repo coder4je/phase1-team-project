@@ -67,15 +67,4 @@ main p canvas {
     left: 5px;
 }
 
-.colours {
-    display: flex;
-    height: 100vh;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: top;
-    justify-content: space-between;
-}
-
-.colours [span= "data-label"] [
-    
-]
+/* #exactPixel { order: 1;} */
