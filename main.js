@@ -1,7 +1,6 @@
 const schemeList = [];
 let colours = document.querySelector('.colours');
 
-
 const APP = {
     canvas: null,
     ctx: null,
@@ -29,6 +28,8 @@ const APP = {
         );
         APP.data = imgDataObj.data; //data prop is an array
         // console.log(APP.data.length, 900 * 600 * 4); //  has 2,160,000 elements
+        
+        // 1st EVENT LISTENER: catch current pixel on canvas
         APP.canvas.addEventListener('mousemove', APP.getPixel);
         APP.canvas.addEventListener('click', APP.addBox);      
         };
@@ -64,7 +65,8 @@ const APP = {
     addBox(ev) {
       //user clicked. Let's add boxes below with the pixel and the average
         let pixel = document.createElement('span');
-        getColorScheme(APP.pixel)
+        getColorScheme(APP.pixel);
+        console.log(APP.pixel);
         setTimeout(() => {
           pixel.className = 'box';
           pixel.setAttribute('data-label', 'Exact pixel');
@@ -118,9 +120,8 @@ const APP = {
     },
   };
     
-
 // When user clicks it, fetch data from API and send it to color extraction tool
-
+// Iterated data by using FOREACH
 function getColorScheme(elm) {
     fetch(`https://www.thecolorapi.com/scheme?rgb=${elm}`)
     .then(res => res.json())
@@ -134,14 +135,13 @@ function getColorScheme(elm) {
     .catch(error => alert('Color Is Not Selected Yet'))
 };
 
-
 const imageInput = document.getElementById('image_input')
 let uploadedImage = "";
 const imgURLList = [];
 let imgURL;
 
 
-// Add Listener for users to upload files
+// 2nd EVENT LISTENER for users to upload files
 imageInput.addEventListener('change', getImage)
 
 function getImage(e) {
@@ -153,52 +153,21 @@ function getImage(e) {
 
     reader.readAsDataURL(e.target.files[0])
     imgURLList.unshift(e.target.files[0].name);
-    imgURL = 'sample4.jpg';
 
     APP.img.src = imgURLList[0];
 }
 
-// Zoom In Selected Scheme Color (IN PROGRESSs)
-// const span = document.querySelector('span');
-// colours.addEventListener('click', addZoomInBox);
+// Random color change by event listener 
+// 3rd EVENT LISTENER to decorate the header
+const h1 = document.querySelector('h1');
 
-// function addZoomInBox(e) {
-  // const zoomIn = document.createElement('span');
-  // colours.appendChild(span);
-  // zoomIn.setAttribute('id', 'zoomIn');
-
-  // zoomIn.style.clientWidth + 500 + 'px';
-  // zoomIn.style.clientHeight + 500 + 'px';
-
-  // let dataColor = e.target.getAttribute('data-color'); 
-  // zoomIn.style.backgroundColor = dataColor;
-  // console.log(dataColor);  
-
-  // let currWidth = e.target.clientWidth;
-  // let
-  // if(currWidth == 500) {
-  //   alert("Maximum zoom-in level reached.");
-  // } else {
-  //   e.target.style.width = (currWidth + 300) + 'px';
-  // }
-  // console.log('moving')
-
-  // e.target.style.width = 500 + 'px'
-  // e.target.style.width = 500 + 'px'
-
-
-
-  // zoomIn.style.width = 500 + 'px';
-  // zoomIn.style.height = 500 + 'px';
-
-// } 
-
-
-// let currWidth = zoomIn.clientWidth;
-
-
-
-
-
+h1.addEventListener('mousemove', () => {
+    
+    let dr = (Math.random()*255);
+    let dg = (Math.random()*255);
+    let db = (Math.random()*255);
+    h1.style.backgroundColor = `rgb(${dr}, ${dg}, ${db})`;
+    }
+);
 
 document.addEventListener('DOMContentLoaded', APP.init);
